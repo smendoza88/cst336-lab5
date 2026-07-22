@@ -11,10 +11,10 @@ app.use(express.urlencoded({extended:true}));
 
 //setting up database connection pool
 const pool = mysql.createPool({
-    host: "your_hostname",
-    user: "your_username",
-    password: "your_password",
-    database: "your_database",
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
     connectionLimit: 10,
     waitForConnections: true
 });
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 app.get("/dbTest", async(req, res) => {
    try {
-        const [rows] = await pool.query("SELECT CURDATE()");
+        const [rows] = await pool.query("select * from q_quotes limit 5;");
         res.send(rows);
     } catch (err) {
         console.error("Database error:", err);
@@ -35,5 +35,5 @@ app.get("/dbTest", async(req, res) => {
 });//dbTest
 
 app.listen(3000, ()=>{
-    console.log("Express server running")
+    console.log("Express server running. http://localhost:3000")
 })
