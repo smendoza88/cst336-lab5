@@ -9,8 +9,19 @@ app.use(express.static('public'));
 //for Express to get values using POST method
 app.use(express.urlencoded({extended:true}));
 
+function logDatabaseError(err) {
+    console.error("Database error:", err.message);
+
+    
+    if (err instanceof AggregateError && Array.isArray(err.errors)) {
+        err.errors.forEach((innerErr, index) => {
+            console.error(`Inner error ${index + 1}:`, innerErr.message);
+        });
+    }
+}
+
 //setting up database connection pool
-const pool = mysql.createPool({
+const conn = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
@@ -20,16 +31,63 @@ const pool = mysql.createPool({
 });
 
 //routes
-app.get('/', (req, res) => {
-   res.send('Hello Express app!')
+app.get('/', async (req, res) => {
+    let qry = `select authorid, firstName, lastName
+               from q_authors
+               order by lastname`;
+    const [rows] = await conn.query(qry);
+   res.render('index', {"authors": rows});
+});
+
+app.get("/searchByKeyword", async (req, res) => {
+    try {
+        let userKeyword = req.query.keyword || "";
+        let qry = `select authorid, firstName, lastName, quote 
+                   from q_quotes NATURAL JOIN q_authors
+                   where  quote LIKE ?`;
+        let sqlParams = [`%${userKeyword}%`];
+        const [rows] = await conn.query(qry, sqlParams);
+
+        console.log("User keyword:", userKeyword);
+        res.render("results", {"quotes": rows});
+    } catch (err) {
+        logDatabaseError(err);
+        res.status(500).send("Database error in /searchByKeyword. Check server logs for details.");
+    }
+});
+
+app.get("/searchByAuthor", async (req, res) => {
+    try {
+        let authorId = req.query.authorId || "";
+        let qry = `select authorid, firstName, lastName, quote 
+                   from q_quotes NATURAL JOIN q_authors
+                   where  authorid = ?`;
+        let sqlParams = [authorId];
+        const [rows] = await conn.query(qry, sqlParams);
+
+        console.log("User authorId:", authorId);
+        res.render("results", {"quotes": rows});
+    } catch (err) {
+        logDatabaseError(err);
+        res.status(500).send("Database error in /searchByAuthor. Check server logs for details.");
+    }
+});
+
+app.get('/api/author/:id', async (req, res) =>{
+    let authorId = req.params.id;
+    let qry = `select *
+                from q_authors
+                where authorId = ?`;
+    const [rows] = await conn.query(qry, [authorId]);
+    res.send(rows);
 });
 
 app.get("/dbTest", async(req, res) => {
    try {
-        const [rows] = await pool.query("select * from q_quotes limit 5;");
+        const [rows] = await conn.query("select * from q_quotes limit 5;");
         res.send(rows);
     } catch (err) {
-        console.error("Database error:", err);
+        logDatabaseError(err);
         res.status(500).send("Database error");
     }
 });//dbTest

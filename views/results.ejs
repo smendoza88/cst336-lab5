@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/header') %>
+<body>
+    <h1>Quotes Found</h1>
+    <% for (i of quotes) { %>
+        <%= i.quote %><br>
+        -<em>
+            <a href="#" id="<%= i.authorid %>">
+                <%= i.firstName%> <%= i.lastName %>
+            </a>
+        </em> <br><br>
+    <% } %>
+
+    <%- include('partials/footer') %>
+    <script src="/js/scripts.js"></script>
+</body>
+</html>
