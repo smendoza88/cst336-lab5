@@ -1,18 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('partials/header') %>
-<body>
-    <h1>Quotes Found</h1>
-    <% for (i of quotes) { %>
-        <%= i.quote %><br>
-        -<em>
-            <a href="#" id="<%= i.authorid %>">
-                <%= i.firstName%> <%= i.lastName %>
-            </a>
-        </em> <br><br>
-    <% } %>
 
-    <%- include('partials/footer') %>
-    <script src="/js/scripts.js"></script>
-</body>
+    <body>
+        <h1>Quotes Found</h1>
+        <% for (i of quotes) { %>
+            <%= i.quote %><br>
+                -<em>
+                    <a href="#" id="<%= i.authorid %>">
+                        <%= i.firstName%>
+                            <%= i.lastName %>
+                    </a>
+                </em> <br><br>
+                <% } %>
+                    
+                    <div class="modal" tabindex="-1" id="authorModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Author Information</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="authorInfo"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+  
+
+
+                    <%- include('partials/footer') %>
+                        <script src="/js/scripts.js"></script>
+    </body>
+
 </html>
