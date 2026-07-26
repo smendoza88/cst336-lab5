@@ -1,10 +1,18 @@
 import express from "express";
 import mysql from "mysql2/promise";
+import path  from "node:path";
+import { fileURLToPath } from 'url';
 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 
 app.set("view engine", "ejs");
-app.use(express.static("public"));
+// app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
+
 
 //for Express to get values using POST method
 app.use(express.urlencoded({ extended: true }));
@@ -35,7 +43,14 @@ app.get("/", async (req, res) => {
                from q_authors
                order by lastname`;
   const [rows] = await conn.query(qry);
-  res.render("index", { authors: rows });
+
+  let categoryQry = `select distinct(category) from q_quotes order by category`;
+  const [categoryRows] = await conn.query(categoryQry);
+
+  let ds = { authors: rows, categories: categoryRows };
+  console.log(ds);
+
+  res.render("index", ds);
 });
 
 app.get("/searchByKeyword", async (req, res) => {
@@ -80,39 +95,69 @@ app.get("/searchByAuthor", async (req, res) => {
   }
 });
 
-app.get("/api/searchByCategory/:name", async (req, res) => {
+app.get("/searchByCategory", async (req, res) => {
   try {
-    let category = req.params.name || "";
-    let qry = `select distinct(category) from q_quotes where category = ?`;
+    let category = req.query.category || "";
+    let qry = `select q.quote, a.firstName, a.lastName, a.authorid
+                from q_quotes q inner join q_authors a
+                on q.authorId = a.authorId
+                where category = ?`;
+
     const [rows] = await conn.query(qry, [category]);
 
     console.log(rows);
-    res.send(rows);
+    res.render("results", { quotes: rows });
   } catch (err) {
     logDatabaseError(err);
     res
       .status(500)
       .send(
-        "Database error in /searchByAuthor. Check server logs for details.",
+        "Database error in /searchByCategory. Check server logs for details.",
+      );
+  }
+});
+
+app.post("/searchByLikes", async (req, res) => {
+  try {
+    // console.log("body", req.body)
+    // console.log("query", req.query)
+    // console.log("parms", req.params)
+    let min = Number(req.body.minLike) || 0;
+    let max = Number(req.body.maxLike) || 0;
+    let qry = `select q.quote, a.firstName, a.lastName, a.authorid
+                from q_quotes q inner join q_authors a
+                on q.authorId = a.authorId
+                where likes between ? and ?`;
+
+    let sqlParams = [min, max];
+    const [rows] = await conn.query(qry, sqlParams);
+
+    console.log(rows);
+    res.render("results", { quotes: rows });
+  } catch (err) {
+    logDatabaseError(err);
+    res
+      .status(500)
+      .send(
+        "Database error in /searchByLikes. Check server logs for details.",
       );
   }
 });
 
 app.get("/api/category", async (req, res) => {
   try {
-  
     let qry = `select distinct(category) from q_quotes order by category`;
     const [rows] = await conn.query(qry);
-    
+
     // console.log(rows);
-    
+
     res.send(rows);
   } catch (err) {
     logDatabaseError(err);
     res
       .status(500)
       .send(
-        "Database error in /searchByAuthor. Check server logs for details.",
+        "Database error in /category. Check server logs for details.",
       );
   }
 });

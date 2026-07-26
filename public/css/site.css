@@ -1,0 +1,22 @@
+/* color paletton https://paletton.com/#uid=7000u0k5YcN40of5aiy8J6CgY6V */
+body{
+    background-color: #665353;
+    font-size: 22px;
+    height: 100dvh;
+    color:#371A1A;
+}
+
+.navbar, footer, .navbar-brand, .nav-link {
+    background-color: #947C7C;
+    color:#371A1A;
+}
+input, select{
+    background-color: #C1A9A9;
+}
+
+button.btn-primary{
+    background-color: #352626;
+    color:#C1A9A9;
+}
+
+/* C1A9A9  light */
