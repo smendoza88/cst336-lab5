@@ -1,0 +1,14 @@
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+
+// 2. Define your new color overrides
+$custom-colors: (
+  "primary": #352626,
+  "secondary": #333333
+);
+
+// 3. Merge your custom colors into Bootstrap's map
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+// Import bootstrap The style will be served as href="/css/main.css"
+@import "../../node_modules/bootstrap/scss/bootstrap";

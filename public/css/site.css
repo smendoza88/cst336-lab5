@@ -6,7 +6,7 @@ body{
     color:#371A1A;
 }
 
-.navbar, footer, .navbar-brand, .nav-link {
+.navbar, footer, .navbar-brand, .nav-link, .navbar-nav .nav-link.active {
     background-color: #947C7C;
     color:#371A1A;
 }
