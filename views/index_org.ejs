@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('partials/header') %>
+  <%- include('partials/nav') %>
+
+    <body class="">
+      <div class="container-fuild p-3">
+
+        <h1> Quote Finder </h1>
+        <form action="/searchByKeyword" method="GET">
+          Keyword:
+          <input type="text" name="keyword" class="">
+          <button class="btn btn-primary">Search by Keyword</button>
+        </form>
+        <form action="/searchByAuthor">
+          <label for="authorId">Author: </label>
+          <select name="authorId">
+            <% for (author of authors) { %>
+              <option value="<%= author.authorid %>">
+                <%= author.firstName %>
+                  <%= author.lastName %>
+              </option>
+              <% } %>
+          </select>
+          <button  class="btn btn-primary">Search by Author</button>
+        </form>
+
+        <form action="/searchByCategory">
+          <label>Category: </label>
+          <select name="category">
+            <% for (cat of categories) { %>
+              <option value="<%= cat.category %>">
+                <%= cat.category %>
+              </option>
+              <% } %>
+          </select>
+          <button  class="btn btn-primary">Search by Category</button>
+        </form>
+
+        <form action="/searchByLikes" method="POST">
+          <label for="minLike">Minimum Likes</label>
+          <input type="number" id="minLike" name="minLike" min="0">
+          <lable for="maxLike">Max Likes</lable>
+          <input type="number" id="maxLike" name="maxLike" min="0">
+          <button type="submit"  class="btn btn-primary">Search by Likes</button>
+        </form>
+
+      </div>
+
+      <%- include('partials/footer') %>
+    </body>
+
+</html>

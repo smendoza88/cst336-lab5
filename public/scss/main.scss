@@ -1,14 +1,69 @@
-@import "../../node_modules/bootstrap/scss/functions";
-@import "../../node_modules/bootstrap/scss/variables";
+// Merriweathe for headings 
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap');
 
-// 2. Define your new color overrides
+// Brand colors
+$primary:       #7C3AED;   // purple
+$primary-dark:  #6D28D9;   // custom (for hover)
+
+// Neutrals / surfaces
+$body-bg:       #FAFAF9;   // warm paper
+$body-color:    #1F2937;   // dark charcoal
+$border-color:  #E5E7EB;
+
+// Typography
+$font-family-sans-serif: 'Inter', system-ui, -apple-system, sans-serif;
+$headings-font-family:   'Merriweather', Georgia, serif;
+$headings-font-weight:   700;
+
+// Component rounding & inputs
+$border-radius:            .5rem;    // ~ 8px
+$border-radius-lg:         1rem;     // ~ 16px
+$input-btn-padding-y:      .65rem;
+$input-focus-border-color: $primary;
+$input-btn-focus-color:    rgba($primary, .15);
+
+// add "book" as so we can do .bg-book etc
 $custom-colors: (
-  "primary": #352626,
-  "secondary": #333333
+  "primary": $primary,
 );
 
-// 3. Merge your custom colors into Bootstrap's map
-$theme-colors: map-merge($theme-colors, $custom-colors);
+
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/maps";
+@import "../../node_modules/bootstrap/scss/mixins";
+
+
+// 3. Merge custom colors into Bootstrap's map
+ $theme-colors: map-merge($theme-colors, $custom-colors);
+
 
 // Import bootstrap The style will be served as href="/css/main.css"
 @import "../../node_modules/bootstrap/scss/bootstrap";
+
+// Serif quote text inside cards
+.quote-text {
+  font-family: $headings-font-family;
+  font-size: 1.125rem;   // 18px
+  line-height: 1.5;
+}
+
+// Purple left accent bar on each result card
+.quote-card {
+  border-left: 4px solid $primary;
+}
+
+// Slightly deeper hover for the primary button
+.btn-primary:hover {
+  background-color: $primary-dark;
+  border-color: $primary-dark;
+}
+
+// Soft pill badge that matches the theme
+.badge-book {
+  background-color: rgba($primary, .10);
+  color: $primary-dark;
+}
+
+// Heart color for the like count
+.text-heart { color: #EF4444; }
