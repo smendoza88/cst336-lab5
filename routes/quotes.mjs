@@ -89,6 +89,15 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get("/author/:id", async (req, res) => {
+  let authorId = req.params.id;
+  let qry = `select *
+                from q_authors
+                where authorId = ?`;
+  const [rows] = await conn.query(qry, [authorId]);
+  res.send(rows);
+});
+
 //Need to export to all me to import in the  index.mjs
 
 export default router;
