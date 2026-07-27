@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1",
-  "server:dev": "nodemon --env-file .env index.mjs",
-  "sass:watch": "sass --watch public/scss/main.scss public/css/main.css",
-  "dev": "concurrently \"npm run sass:watch\" \"npm run server:dev\""
+    "build:css": "sass scss/main.scss public/css/main.css --style=compressed --load-path=node_modules --quiet-deps --silence-deprecation=import",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server:dev": "nodemon --env-file .env index.mjs",
+    "sass:watch": "sass --watch scss/main.scss public/css/main.css --load-path=node_modules --quiet-deps --silence-deprecation=import",
+    "dev": "concurrently \"npm run sass:watch\" \"npm run server:dev\"",
+    "start": "npm run build:css && node --env-file .env index.mjs"
   },
   "keywords": [],
   "author": "",

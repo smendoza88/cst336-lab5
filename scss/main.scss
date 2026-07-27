@@ -1,3 +1,4 @@
+@use "sass:map";
 // Merriweathe for headings 
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap');
 
@@ -24,22 +25,21 @@ $input-btn-focus-color:    rgba($primary, .15);
 
 // add "book" as so we can do .bg-book etc
 $custom-colors: (
-  "primary": $primary,
+  "book": $primary,
 );
 
-
-@import "../../node_modules/bootstrap/scss/functions";
-@import "../../node_modules/bootstrap/scss/variables";
-@import "../../node_modules/bootstrap/scss/maps";
-@import "../../node_modules/bootstrap/scss/mixins";
-
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
 
 // 3. Merge custom colors into Bootstrap's map
- $theme-colors: map-merge($theme-colors, $custom-colors);
+// only use if we want a custom class like bg-book up above. See the bootstrap docs
+// $theme-colors: map-merge($theme-colors, $custom-colors);
 
 
 // Import bootstrap The style will be served as href="/css/main.css"
-@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "bootstrap/scss/bootstrap";
 
 // Serif quote text inside cards
 .quote-text {
