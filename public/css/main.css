@@ -11885,4 +11885,24 @@ textarea.form-control-lg {
   color: #EF4444;
 }
 
+body {
+  background-color: #F2F2F2;
+}
+
+nav .navbar-brand,
+.navbar-brand a,
+.navbar-nav .nav-link.active {
+  color: white;
+}
+
+.navbar-brand:hover,
+.nav-link.active:hover {
+  color: #B28BF5;
+}
+
+footer,
+nav {
+  background-color: #4E08C6;
+}
+
 /*# sourceMappingURL=main.css.map */
