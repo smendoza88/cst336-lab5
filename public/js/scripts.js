@@ -10,7 +10,7 @@ async function getAuthorInfo(e) {
   let url = `/quotes/author/${this.id}`;
   let resp = await fetch(url);
   let data = await resp.json();
-  console.log(data);
+  // console.log(data);
   let authorInfo = document.getElementById("authorInfo");
   authorInfo.innerHTML = `<h1> ${data[0].firstName}
                                  ${data[0].lastName} </h1>`;

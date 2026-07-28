@@ -77,7 +77,7 @@ router.get('/', async (req, res, next) => {
     const [authors] = await conn.query(`select authorid, concat(firstname, ' ', lastname) as authorName from q_authors order by lastname`);
     const [categories] = await conn.query('select distinct(category) from q_quotes order by category');
 
-    console.log(authors)
+    // console.log(authors)
     res.render('index', {
       authors,
       categories,
